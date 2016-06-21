@@ -1,0 +1,113 @@
+Case 3: PRODSUP-003:
+Dear customer support,
+
+I need to explain how CircleCI works to my boss. I’ve read the docs but I still don’t get it. Can you please explain 
+to me, in your own words, how CircleCI works? Also, it seems like you don’t support .NET builds. Why is that?
+Adam
+=====================================================================
+Case 3: PRODSUP-003:
+Dear Adam,
+  CircleCI is the tool for continuous integration with automated test support. It's created to make development test
+ and delivery process easier. When you are ready with your changes on gitHub CircleCI automatically runs all your 
+configured tests for your project. Also there is possibility of automatic deployment if tests succeed. So we do all
+ your routine work. 
+  CircleCI in its universal environment and for most standard projects it works just out of the box. If your project
+ requires any special setup there is very easy way to tune even the most complicated cases.
+  We support most popular platforms and technologies. We currently serve 2 mobile platforms and 7 web languages. 
+We always improve in our service and work on new features at all time. 
+We do not officially support .NET, but some users have had luck with the mono framework which they  can install 
+via circle.yml
+Configuring CircleCI
+CircleCI automatically infers your settings from your code, so CircleCI’s normal processing works just fine in 
+most circumstances. When it doesn’t, the circle.yml file makes it easy to tell CircleCI what you need. This is a simple
+ YAML file where you spell out any tweaks required for your web app. You place the file in your git repo’s root 
+directory and CircleCI reads the file each time it runs a build.
+If you want a quick look at how to set up your circle.yml file, check out our sample file.
+Should you have a test failure, our troubleshooting section can likely tell you the best way to solve the problem. 
+If you find yourself repeatedly consulting this guide, please contact us and let us know what you’re working on. 
+We’ll try to make it easier for you.
+File structure and content
+The circle.yml file is made up of six primary sections. Each section represents a phase of running your tests:
+•	machine: adjusting the VM to your preferences and requirements
+•	checkout: checking out and cloning your git repo
+•	dependencies: setting up your project’s language-specific dependencies
+•	database: preparing the databases for your tests
+•	test: running your tests
+•	deployment: deploying your code to your web servers
+The circle.yml file contains another general section for general build-related configurations that are not related 
+to a specific phase, and an experimental section for early access previews of configuration changes under consideration.
+Remember: most projects won’t need to specify anything for many of the phases.
+The sections contain lists of bash commands. If you don’t specify commands, CircleCI infers them from your code. 
+Commands are run in the order they appear in the file; all test commands are run to completion, but a non-zero exit 
+code during setup will cause the build to fail early. You can modify which—and when—commands are run by adding override, 
+pre and/or post to adjust CircleCI’s inferred commands. Here’s how it works:
+•	pre: commands run before CircleCI’s inferred commands
+•	override: commands run instead of CircleCI’s inferred commands
+•	post: commands run after CircleCI’s inferred commands
+Each command is run in a separate shell. As such, they do not share an environment with their predecessors, so be
+ aware that export foo=bar in particular does not work. If you’d like to set an environment variable globally, you
+ can specify them in the Machine configuration section, described below.
+Modifiers
+You can tweak individual commands by adding a modifier. Allowed modifiers are:
+•	timeout: if a command runs this many seconds without output, kill it (default:600s)
+•	pwd: run commands using this value as the current working directory (default: the checkout directory named for 
+your project, except in the machine and checkout/pre sections, where it defaults to $HOME.)
+•	environment: a hash creating a list of environment variables set for this command (see Machine configuration 
+for this modifier’s properties when used in the machine section of the file)
+•	parallel: (only used with commands in the test section) if you have manually set up parallelism, set this to
+ true to run a command across all VMs
+•	files: The files identified by the file list (or globs) will be appended to the command arguments. The files
+ will be distributed across all containers running the build. Check manual parallelism setup document for more details.
+•	background: when “true”, runs a command in the background. It is similar to ending a shell command with ‘&’, but 
+works correctly over ssh. Useful for starting servers, which your tests will connect to.
+Note that YAML is very strict about indentation each time you add a new property. For that reason, modifiers must be 
+indented one level from their command. In the following example, we treat the bundle install command as a key, with 
+timeout, environment, and pwd as the command’s hash values. This means you will need to add a colon to the end of the 
+command for it to parse correctly.
+dependencies:
+  override:
+    - bundle install: # note the colon here
+        timeout: 240
+        environment:
+          foo: bar
+          foo2: bar2
+        pwd:
+          test_dir
+Machine configuration
+The machine section enables you to configure the virtual machine that runs your tests.
+Here’s an illustration of the types of things you might typically set in the machine section of the file.
+machine:
+  timezone:
+    America/Los_Angeles
+  ruby:
+    version: 1.9.3-p0-falcon
+
+test:
+  post:
+    - bundle exec rake custom:test:suite
+This example sets the time zone, chooses a Ruby version and patchset, and adds a custom test command to run after the 
+rest of your commands.
+Although pre and post are supported in the machine section, override is not. Note that custom environment variables are
+ not available during the machine pre section because they are setup in the main machine section.
+Here’s how you might adjust the circle.yml file using pre to install a different version of phantomjs than the version
+ CircleCI has installed.
+machine:
+  pre:
+    - curl -k -L -o phantomjs.tar.bz2 http://phantomjs.googlecode.com/files/phantomjs-1.8.2-linux-x86_64.tar.bz2
+    - tar -jxf phantomjs.tar.bz2
+Environment
+You set environment variables for all commands in the build by adding environment to the machine section. Remember that 
+CircleCI uses a new shell for every command; as previously mentioned export foo=bar won’t work. Instead, you must 
+include something like this.
+machine:
+  environment:
+    foo: bar
+
+
+Some users have had luck with the mono framework which you can install via circle.yml 
+
+Best Regards,
+
+ONOBUKORAYE (Customer Support)
++2348138520718
+Skype:onobutega
