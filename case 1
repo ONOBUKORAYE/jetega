@@ -1,0 +1,5 @@
+test:
+  override:
+    -mkdir-p $CIRCLE_TEST_REPORTS/cucumber
+    -bundle exec cucumber --format pretty --format json --out $CIRCLE_TEST_REPORTS/cucumber/test.cucumber
+    
